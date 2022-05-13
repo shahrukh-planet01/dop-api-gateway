@@ -1,0 +1,32 @@
+server:
+  port: 9001
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: oauthMicroservice
+        uri: http://localhost:8081/
+        predicates:
+          - Path=/oauth/***
+      - id: resourceMicroservice
+        uri: http://localhost:8082/
+        predicates:
+          - Path=/resource/product/**
+        filters:
+          - RewritePath=/resource/product/(?<segment>.*), /resource/product/$\{segment}
+      - id: todoMicroservice
+        uri: http://localhost:8083/
+        predicates:
+          - Path=/todo-service/**
+        filters:
+          - RewritePath=/todo-service/(?<segment>.*), /todo-service/$\{segment}
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
