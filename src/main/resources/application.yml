@@ -30,3 +30,5 @@ spring:
               - POST
               - PUT
               - DELETE
+  application:
+    name: dop-api-gateway
